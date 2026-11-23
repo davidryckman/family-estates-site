@@ -1,7 +1,7 @@
 <!doctype html>
 <html lang="en">
 <head>
-<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<meta charset="utf-8"><meta name="referrer" content="no-referrer"><meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Get the App · Family Estates</title>
 <meta name="description" content="Three quick steps to come home to Family Estates: install the app, sign in with Apple, and open your invitation."><meta name="theme-color" content="#173f35">
 <meta property="og:title" content="Welcome Home · Family Estates"><meta property="og:description" content="Install the app, sign in with Apple, and open your invitation."><meta property="og:type" content="website"><meta property="og:url" content="https://davidryckman.github.io/family-estates-site/welcome/">
@@ -21,11 +21,27 @@
 <ol class="steps">
 <li><span class="step-num" aria-hidden="true">1</span><div><h2>Install the app</h2><p>Open the App Store on your iPhone (iOS 17 or later).</p><a class="button" href="https://apps.apple.com/app/id6823732466">Get Family Estates</a></div></li>
 <li><span class="step-num" aria-hidden="true">2</span><div><h2>Sign in with Apple</h2><p>Open the app and choose Continue with Apple. That’s your private key, no new password to remember.</p></div></li>
-<li><span class="step-num" aria-hidden="true">3</span><div><h2>Open your invitation</h2><p>Tap the invitation link you were sent. If the app doesn’t open on its own, tap below.</p><a class="button button-quiet" href="ryckman-estates://">Open Family Estates</a><p class="step-note">Your personal invitation link comes from the family, not from this page.</p></div></li>
+<li><span class="step-num" aria-hidden="true">3</span><div><h2>Open your invitation</h2><p>Tap the invitation link you were sent. If the app doesn’t open on its own, tap below.</p><a class="button button-quiet" id="open-app" href="ryckman-estates://">Open Family Estates</a><button class="button button-quiet" id="copy-invite" type="button" hidden>Copy my invitation</button><p class="step-note" id="invite-note">Your personal invitation link comes from the family, not from this page.</p><p class="step-note" id="copied-note" role="status" hidden>Copied. In Family Estates, tap “Have an invitation link?” and paste.</p></div></li>
 </ol>
 <p class="availability">Made for our family. Membership by invitation. <a href="../support/">Need a hand?</a></p></div>
 <figure class="welcome-preview"><div class="phone-frame"><img src="../assets/welcome-screen.webp" alt="Family Estates welcome screen showing an autumn neighborhood, the words Welcome Home, and private family access" width="692" height="1500" fetchpriority="high"></div><figcaption>Welcome screen preview · Not an app sign-in</figcaption></figure>
 </div><div class="wrap brand-promise"><span></span><p>Family always finds a way home</p><span></span></div></section>
 </main>
 <footer class="site-footer"><div class="wrap footer-top"><div><a class="footer-brand" href="../index.html">Family Estates</a><p>Family always finds a way home.</p></div><nav class="footer-nav" aria-label="Footer navigation"><a href="../support/">Support</a><a href="../privacy/">Privacy</a><a href="../account-deletion/">Account deletion</a><a href="../terms/">Website information</a></nav></div><div class="wrap footer-bottom"><a href="mailto:familyestatesapp@gmail.com">familyestatesapp@gmail.com</a><p>© 2026 Family Estates · Operated by PrinceRedBeard</p></div></footer>
+<script>
+(function(){"use strict";
+// Personal QR cards open this page as /welcome/#t=<token>. The fragment is never sent to the server.
+var m=/^#t=([A-Za-z0-9_-]{32,512})$/.exec(location.hash);if(!m)return;
+var link="ryckman-estates://invite?token="+m[1];
+var open=document.getElementById("open-app"),copy=document.getElementById("copy-invite"),note=document.getElementById("invite-note");
+open.href=link;open.textContent="Open my invitation";
+note.textContent="This invitation is personal to you and works once. Please don\u2019t share it.";
+copy.hidden=false;
+copy.addEventListener("click",function(){
+var done=function(){document.getElementById("copied-note").hidden=false;};
+function fallback(){var t=document.createElement("textarea");t.value=link;t.setAttribute("readonly","");t.style.position="fixed";t.style.opacity="0";document.body.appendChild(t);t.select();try{document.execCommand("copy");done();}catch(e){}document.body.removeChild(t);}
+if(navigator.clipboard&&navigator.clipboard.writeText){navigator.clipboard.writeText(link).then(done,fallback);}else{fallback();}
+});
+})();
+</script>
 </body></html>
